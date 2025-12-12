@@ -48,5 +48,3 @@ require("lazy").setup({
 -- Load files
 require("options")
 require("mappings")
--- require("custom")
--- require("configs")

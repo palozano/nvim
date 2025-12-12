@@ -4,14 +4,7 @@ return {
   ---@module "fzf-lua"
   ---@type fzf-lua.Config|{}
   ---@diagnostics disable: missing-fields
-  opts = {
-    actions = {
-      files = {
-        -- true,
-        ["ctrl-q"] = { fn = function() FzfLua.actions.file_sel_to_qf() end, prefix = "select-all" }
-      }
-    }
-  },
+  opts = {},
   ---@diagnostics enable: missing-fields
   keys = {
     --/files,buffers
@@ -47,6 +40,14 @@ return {
     { "<leader>fd", function() FzfLua.diagnostics_document({}) end,  desc = "Pick buffer diagnostics" },
     { "<leader>fD", function() FzfLua.diagnostics_workspace({}) end, desc = "Pick all diagnostics" },
   },
-
-  config = function() require('configs.fzf-lua') end,
+  config = function()
+    require("fzf-lua").setup({
+      actions = {
+        files = {
+          true,
+          ["ctrl-q"] = { fn = FzfLua.actions.file_sel_to_qf, prefix = "select-all" }
+        }
+      }
+    })
+  end,
 }
