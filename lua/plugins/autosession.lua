@@ -1,16 +1,14 @@
-return {
-	'rmagatti/auto-session',
-	lazy = false,
+vim.pack.add({
+  { src = "https://github.com/rmagatti/auto-session" },
+})
 
-	---enables autocomplete for opts
-	---@module "auto-session"
-	---@type AutoSession.Config
-	opts = {
-		suppressed_dirs = { '~/', '~/Downloads', '/' },
-		use_git_branch = true,
-		show_auto_restore_notif = true,
-		session_lens = {
-			previewer = true,
-		},
-	}
-}
+local autosession = require("auto-session")
+
+autosession.setup({
+  suppressed_dirs = { "~/", "~/Downloads", "/" },
+  use_git_branch = true,
+  show_auto_restore_notif = true,
+  session_lens = {
+    previewer = 'summary',
+  },
+})
