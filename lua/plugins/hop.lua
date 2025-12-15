@@ -1,15 +1,11 @@
-return {
-  'smoka7/hop.nvim',
-  version = "*",
-  opts = {},
-  keys = {
-    {
-      'S',
-      function()
-        require('hop').hint_words({})
-      end,
-      remap = true,
-      desc = 'Hop to any word'
-    }
-  }
-}
+vim.pack.add({
+  { src = "https://github.com/smoka7/hop.nvim" },
+})
+
+local hop = require("hop")
+
+hop.setup({})
+
+vim.keymap.set("n", "S", function()
+  hop.hint_words({})
+end, { remap = true, desc = "Hop to any word" })

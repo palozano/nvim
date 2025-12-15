@@ -1,53 +1,49 @@
-return {
-  "ibhagwan/fzf-lua",
-  dependencies = { "nvim-mini/mini.icons" },
-  ---@module "fzf-lua"
-  ---@type fzf-lua.Config|{}
-  ---@diagnostics disable: missing-fields
-  opts = {},
-  ---@diagnostics enable: missing-fields
-  keys = {
-    --/files,buffers
-    { "<leader>,",  function() FzfLua.buffers({}) end,               desc = "Pick buffers" },
-    { "<leader>f/", function() FzfLua.search_history({}) end,        desc = "Pick history" },
-    { "<leader>f:", function() FzfLua.command_history({}) end,       desc = "Pick command history" },
-    { "<leader>fM", function() FzfLua.manpages({}) end,              desc = "Pick man" },
-    { "<leader>fR", function() FzfLua.registers({}) end,             desc = "Pick registers" },
-    { "<leader>fc", function() FzfLua.commands({}) end,              desc = "Pick commands" },
-    { "<leader>ff", function() FzfLua.files({}) end,                 desc = "Pick files" },
-    { "<leader>fg", function() FzfLua.live_grep({}) end,             desc = "Grep" },
-    { "<leader>fw", function() FzfLua.grep_cword({}) end,            desc = "Grep word" },
-    { "<leader>fh", function() FzfLua.helptags({}) end,              desc = "Pick help" },
-    { "<leader>fk", function() FzfLua.keymaps({}) end,               desc = "Pick keymaps" },
-    { "<leader>fl", function() FzfLua.resume({}) end,                desc = "Pick last" },
-    { "<leader>fm", function() FzfLua.marks({}) end,                 desc = "Pick marks" },
-    { "<leader>fu", function() FzfLua.undotree({}) end,              desc = "Pick undo" },
+vim.pack.add({
+  { src = "https://github.com/ibhagwan/fzf-lua" },
+})
 
-    --/git
-    { "<leader>gb", function() FzfLua.git_branches({}) end,          desc = "Git branches" },
-    { "<leader>gd", function() FzfLua.git_diff({}) end,              desc = "Git diff" },
-    { "<leader>gc", function() FzfLua.git_commits({}) end,           desc = "Git commits" },
-    { "<leader>gs", function() FzfLua.git_status({}) end,            desc = "Git status" },
-    { "<leader>gS", function() FzfLua.git_stash({}) end,             desc = "Git stash" },
-    { "<leader>gb", function() FzfLua.git_blame({}) end,             desc = "Git blame" },
+local fzf = require("fzf-lua")
 
-    --/lsp
-    { "<leader>fr", function() FzfLua.lsp_references({}) end,        desc = "LSP references" },
-    { "<leader>fs", function() FzfLua.lsp_document_symbols({}) end,  desc = "LSP symbols" },
-    { "<leader>ft", function() FzfLua.lsp_definitions({}) end,       desc = "LSP definitions" },
-
-    --/diagnostics
-    { "<leader>fd", function() FzfLua.diagnostics_document({}) end,  desc = "Pick buffer diagnostics" },
-    { "<leader>fD", function() FzfLua.diagnostics_workspace({}) end, desc = "Pick all diagnostics" },
+fzf.setup({
+  actions = {
+    files = {
+      true,
+      ["ctrl-q"] = { fn = fzf.actions.file_sel_to_qf, prefix = "select-all" },
+    },
   },
-  config = function()
-    require("fzf-lua").setup({
-      actions = {
-        files = {
-          true,
-          ["ctrl-q"] = { fn = FzfLua.actions.file_sel_to_qf, prefix = "select-all" }
-        }
-      }
-    })
-  end,
-}
+})
+
+local map = vim.keymap.set
+
+-- files/buffers
+map("n", "<leader>,", function() fzf.buffers({}) end, { desc = "Pick buffers" })
+map("n", "<leader>f/", function() fzf.search_history({}) end, { desc = "Pick history" })
+map("n", "<leader>f:", function() fzf.command_history({}) end, { desc = "Pick command history" })
+map("n", "<leader>fM", function() fzf.manpages({}) end, { desc = "Pick man" })
+map("n", "<leader>fR", function() fzf.registers({}) end, { desc = "Pick registers" })
+map("n", "<leader>fc", function() fzf.commands({}) end, { desc = "Pick commands" })
+map("n", "<leader>ff", function() fzf.files({}) end, { desc = "Pick files" })
+map("n", "<leader>fg", function() fzf.live_grep({}) end, { desc = "Grep" })
+map("n", "<leader>fw", function() fzf.grep_cword({}) end, { desc = "Grep word" })
+map("n", "<leader>fh", function() fzf.helptags({}) end, { desc = "Pick help" })
+map("n", "<leader>fk", function() fzf.keymaps({}) end, { desc = "Pick keymaps" })
+map("n", "<leader>fl", function() fzf.resume({}) end, { desc = "Pick last" })
+map("n", "<leader>fm", function() fzf.marks({}) end, { desc = "Pick marks" })
+map("n", "<leader>fu", function() fzf.undotree({}) end, { desc = "Pick undo" })
+
+-- git
+map("n", "<leader>gb", function() fzf.git_branches({}) end, { desc = "Git branches" })
+map("n", "<leader>gd", function() fzf.git_diff({}) end, { desc = "Git diff" })
+map("n", "<leader>gc", function() fzf.git_commits({}) end, { desc = "Git commits" })
+map("n", "<leader>gs", function() fzf.git_status({}) end, { desc = "Git status" })
+map("n", "<leader>gS", function() fzf.git_stash({}) end, { desc = "Git stash" })
+map("n", "<leader>gB", function() fzf.git_blame({}) end, { desc = "Git blame" })
+
+-- lsp
+map("n", "<leader>fr", function() fzf.lsp_references({}) end, { desc = "LSP references" })
+map("n", "<leader>fs", function() fzf.lsp_document_symbols({}) end, { desc = "LSP symbols" })
+map("n", "<leader>ft", function() fzf.lsp_definitions({}) end, { desc = "LSP definitions" })
+
+-- diagnostics
+map("n", "<leader>fd", function() fzf.diagnostics_document({}) end, { desc = "Pick buffer diagnostics" })
+map("n", "<leader>fD", function() fzf.diagnostics_workspace({}) end, { desc = "Pick all diagnostics" })

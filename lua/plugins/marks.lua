@@ -1,8 +1,8 @@
-return {
-	"chentoast/marks.nvim",
-	event = "VeryLazy",
-	opts = {},
-}
+vim.pack.add({
+  { src = "https://github.com/chentoast/marks.nvim" },
+})
+
+require("marks").setup({})
 
 --  mx           Set mark x
 --  m,           Set the next available alphabetical (lowercase) mark
