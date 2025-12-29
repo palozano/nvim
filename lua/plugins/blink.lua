@@ -1,5 +1,8 @@
 vim.pack.add({
-  { src = "https://github.com/saghen/blink.cmp" },
+  {
+    src = "https://github.com/saghen/blink.cmp",
+    version = vim.version.range("^1")
+  },
   { src = "https://github.com/rafamadriz/friendly-snippets" },
 })
 
@@ -10,8 +13,7 @@ blink.setup({
     preset = "default",
   },
   fuzzy = {
-    -- Avoid native binary requirement; use Lua implementation
-    implementation = "lua",
+    implementation = "prefer_rust",
   },
   appearance = {
     use_nvim_cmp_as_default = false,
@@ -26,7 +28,7 @@ blink.setup({
   completion = {
     documentation = {
       auto_show = true,
-      auto_show_delay_ms = 250,
+      auto_show_delay_ms = 100,
     },
   },
 })

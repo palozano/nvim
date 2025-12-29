@@ -5,10 +5,10 @@ vim.pack.add({
 local autosession = require("auto-session")
 
 autosession.setup({
-  suppressed_dirs = { "~/", "~/Downloads", "/" },
-  use_git_branch = true,
-  show_auto_restore_notif = true,
+  git_use_branch_name = true,
   session_lens = {
-    previewer = 'summary',
+    previewer = "summary"
   },
+  show_auto_restore_notif = true,
+  suppressed_dirs = { "~/", "~/Downloads", "/" }
 })

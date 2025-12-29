@@ -43,6 +43,9 @@ o.conceallevel = 1
 -- make statusline transparent
 --vim.cmd(":highlight StatusLine guibg=0 guifg=1")
 
+-- suggested by plugin `auto-session`
+o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -52,5 +55,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
     vim.highlight.on_yank()
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown" },
+  callback = function()
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = { "en_us" }
   end,
 })

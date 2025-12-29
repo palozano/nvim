@@ -27,27 +27,8 @@ local servers = {
     filetypes = {
       "javascript",
       "javascriptreact",
-      "javascript.jsx",
       "typescript",
       "typescriptreact",
-      "typescript.tsx",
-    },
-  },
-  solidity_ls = {
-    cmd = { "nomicfoundation-solidity-language-server", "--stdio" },
-    filetypes = { "solidity" },
-  },
-  emmet_language_server = {
-    filetypes = {
-      "html",
-      "css",
-      "less",
-      "sass",
-      "scss",
-      "javascriptreact",
-      "typescriptreact",
-      "elixir",
-      "heex",
     },
   },
 }
