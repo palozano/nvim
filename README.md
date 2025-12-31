@@ -67,3 +67,5 @@ Personal Neovim setup using Neovim's native package manager (`vim.pack.add`). Pl
 ## Next steps
 - Open `README.md` if you want to tweak wording or add more notes.
 - After adding or changing plugins, restart Neovim so `vim.pack.add` can pull any new sources.
+
+NOTE: this has been generated with AI since I'm too lazy to do it.
