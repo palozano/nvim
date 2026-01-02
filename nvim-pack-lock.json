@@ -4,6 +4,10 @@
       "rev": "292492ab7af4bd8b9e37e28508bc8ce995722fd5",
       "src": "https://github.com/rmagatti/auto-session"
     },
+    "blink-emoji.nvim": {
+      "rev": "066013e4c98a9318408ee3f1ca2dbcb6fa3e4c06",
+      "src": "https://github.com/moyiz/blink-emoji.nvim"
+    },
     "blink.cmp": {
       "rev": "b19413d214068f316c78978b08264ed1c41830ec",
       "src": "https://github.com/saghen/blink.cmp",
@@ -12,6 +16,10 @@
     "crates.nvim": {
       "rev": "ac9fa498a9edb96dc3056724ff69d5f40b898453",
       "src": "https://github.com/saecki/crates.nvim"
+    },
+    "csvview.nvim": {
+      "rev": "1f409951516db0d5babaa1f44842a9a882babdd3",
+      "src": "https://github.com/hat0uma/csvview.nvim"
     },
     "friendly-snippets": {
       "rev": "572f5660cf05f8cd8834e096d7b4c921ba18e175",
