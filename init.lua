@@ -26,6 +26,7 @@ local modules = {
   "lsp",
   "marks",
   "mini",
+  -- "notes",
   "oil",
   "quickfix",
   "terminal",

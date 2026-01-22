@@ -5,6 +5,9 @@ vim.pack.add({
 local fzf = require("fzf-lua")
 
 fzf.setup({
+  winopts = {
+    split = "belowright new",
+  },
   actions = {
     files = {
       true,

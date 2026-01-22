@@ -49,6 +49,10 @@
       "rev": "5231c62aa83c2f8dc8e7ba957aa77098cda1257d",
       "src": "https://github.com/folke/lazydev.nvim"
     },
+    "lua-utils.nvim": {
+      "rev": "e565749421f4bbb5d2e85e37c3cef9d56553d8bd",
+      "src": "https://github.com/nvim-neorg/lua-utils.nvim"
+    },
     "marks.nvim": {
       "rev": "f353e8c08c50f39e99a9ed474172df7eddd89b72",
       "src": "https://github.com/chentoast/marks.nvim"
@@ -60,6 +64,10 @@
     "mini.nvim": {
       "rev": "6bd3a01aaf7d248aea1b78aacdd5d44bffa002c1",
       "src": "https://github.com/echasnovski/mini.nvim"
+    },
+    "neorg": {
+      "rev": "d4e6b3665504baa88685c9d2e79446d336dc0594",
+      "src": "https://github.com/nvim-neorg/neorg"
     },
     "neovim-tips": {
       "rev": "7ab9c2eb7a4a183f8f24cea97c4ab7a25d72e3c5",

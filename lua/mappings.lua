@@ -30,5 +30,37 @@ set("n", "<M-S-k>", ":cprev<CR>", { desc = "Previous location item" })
 -- diagnostics
 set('n', '[d', function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = 'previous diagnostic message' })
 set('n', ']d', function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = 'next diagnostic message' })
+set('n', '<leader>dl', vim.diagnostic.setloclist, { desc = 'diagnostics list' })
 
-vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, { desc = 'diagnostics list' })
+-- always center search results
+set('n', 'n', 'nzz', { silent = true })
+set('n', 'N', 'Nzz', { silent = true })
+set('n', '*', '*zz', { silent = true })
+set('n', '#', '#zz', { silent = true })
+set('n', 'g*', 'g*zz', { silent = true })
+
+-- open new file adjacent to current file
+set('n', '<leader>o', ':e <C-R>=expand("%:p:h") . "/" <cr>')
+
+-- <leader>, shows/hides hidden characters
+set('n', '<leader>,', ':set invlist<cr>')
+
+-- always center search results
+set('n', 'n', 'nzz', { silent = true })
+set('n', 'N', 'Nzz', { silent = true })
+set('n', '*', '*zz', { silent = true })
+set('n', '#', '#zz', { silent = true })
+set('n', 'g*', 'g*zz', { silent = true })
+
+-- "very magic" (less escaping needed) regexes by default
+set('n', '?', '?\\v')
+set('n', '/', '/\\v')
+set('c', '%s/', '%sm/')
+
+-- no arrow keys, force yourself to use the home row
+set('n', '<up>', '<nop>')
+set('n', '<down>', '<nop>')
+set('i', '<up>', '<nop>')
+set('i', '<down>', '<nop>')
+set('i', '<left>', '<nop>')
+set('i', '<right>', '<nop>')

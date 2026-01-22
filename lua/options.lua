@@ -4,13 +4,26 @@ local o = vim.opt
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+vim.g.maplocalleader = ","
 
+--
+-- folding
+o.foldmethod = 'expr'
+o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+o.foldcolumn = '0'
+o.foldtext = '' -- this syntaxhighlights the line and not just one color
+o.foldlevel = 99
+o.foldlevelstart = 8
+o.foldnestmax = 8
+o.conceallevel = 1
+-- not enable folding
+o.foldenable = false
+o.foldmethod = 'manual'
 --
 o.shiftwidth = 4
 o.expandtab = true
 o.tabstop = 4
-o.clipboard = "unnamedplus"
+o.clipboard = 'unnamedplus'
 o.number = true
 o.relativenumber = true
 o.hlsearch = false
@@ -29,22 +42,23 @@ o.scrolloff = 3
 -- vim.opt.colorcolumn = '120'
 o.cmdheight = 2
 o.confirm = true
--- folding
-o.foldmethod = "expr"
-o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-o.foldcolumn = "0"
-o.foldtext = "" -- this syntaxhighlights the line and not just one color
-o.foldlevel = 99
-o.foldlevelstart = 8
-o.foldnestmax = 8
-
-o.conceallevel = 1
+-- keep current content top+left when splitting
+o.splitright = true
+o.splitbelow = true
+-- Decent wildmenu
+o.wildmode = 'list:longest'
+o.wildignore = '.hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site'
+-- tabs: go big or go home
+o.shiftwidth = 8
+o.softtabstop = 8
+o.tabstop = 8
+o.expandtab = false
 
 -- make statusline transparent
 --vim.cmd(":highlight StatusLine guibg=0 guifg=1")
 
 -- suggested by plugin `auto-session`
-o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
 
 -- Highlight when yanking (copying) text
@@ -58,10 +72,12 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown" },
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'markdown' },
   callback = function()
     vim.opt_local.spell = true
-    vim.opt_local.spelllang = { "en_us" }
+    vim.opt_local.spelllang = { 'en_us' }
   end,
 })
+
+vim.diagnostic.config({ virtual_text = true, virtual_lines = false })
