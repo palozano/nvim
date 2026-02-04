@@ -163,18 +163,21 @@ set("i", "<right>", "<nop>")
 set("n", "<leader>o", ":find **/", { silent = false, desc = "Find file (:find via fd)" })
 
 -- open the current line in the browser (uses the git alias `url` that I defined)
-set("n", "<leader>b", function()
-	local base = vim.fn.trim(vim.fn.system(
-		"git remote get-url origin | sed -E 's!^ssh://git@([^/]+)/!https://\\1/!; s!\\.git$!!'"
-	))
-	local branch = vim.fn.trim(vim.fn.system("git rev-parse --abbrev-ref HEAD"))
-	local root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
-	local file = vim.fn.expand("%:p")
-	local rel = file:sub(#root + 2)
-	local line = vim.fn.line(".")
-	local url = string.format("%s/blob/%s/%s#L%d", base, branch, rel, line)
-	vim.fn.jobstart({ "open", url }, { detach = true })
-end, { desc = "Open line in browser" })
+set("n", "<leader>b",
+	function()
+		local base = vim.fn.trim(vim.fn.system(
+			"git remote get-url origin | sed -E 's!^ssh://git@([^/]+)/!https://\\1/!; s!\\.git$!!'"
+		))
+		local branch = vim.fn.trim(vim.fn.system("git rev-parse --abbrev-ref HEAD"))
+		local root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
+		local file = vim.fn.expand("%:p")
+		local rel = file:sub(#root + 2)
+		local line = vim.fn.line(".")
+		local url = string.format("%s/blob/%s/%s#L%d", base, branch, rel, line)
+		vim.fn.jobstart({ "open", url }, { detach = true })
+	end,
+	{ desc = "Open line in browser" }
+)
 
 
 -- Loading helper
