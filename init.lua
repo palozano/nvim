@@ -119,12 +119,8 @@ set("n", "<M-S-j>", ":cnext<CR>", { desc = "Next location item" })
 set("n", "<M-S-k>", ":cprev<CR>", { desc = "Previous location item" })
 
 -- diagnostics
-set("n", "[d", function()
-	vim.diagnostic.jump({ count = 1, float = true })
-end, { desc = "previous diagnostic message" })
-set("n", "]d", function()
-	vim.diagnostic.jump({ count = -1, float = true })
-end, { desc = "next diagnostic message" })
+set("n", "[d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "previous diagnostic message" })
+set("n", "]d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "next diagnostic message" })
 set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "diagnostics list" })
 
 -- always center search results
@@ -156,6 +152,8 @@ set("c", "%s/", "%sm/")
 -- no arrow keys, force yourself to use the home row
 set("n", "<up>", "<nop>")
 set("n", "<down>", "<nop>")
+set("n", "<right>", ":bn<CR>")
+set("n", "<left>", ":bp<CR>")
 set("i", "<up>", "<nop>")
 set("i", "<down>", "<nop>")
 set("i", "<left>", "<nop>")
@@ -163,6 +161,20 @@ set("i", "<right>", "<nop>")
 
 -- quick open from command line
 set("n", "<leader>o", ":find **/", { silent = false, desc = "Find file (:find via fd)" })
+
+-- open the current line in the browser (uses the git alias `url` that I defined)
+set("n", "<leader>b", function()
+	local base = vim.fn.trim(vim.fn.system(
+		"git remote get-url origin | sed -E 's!^ssh://git@([^/]+)/!https://\\1/!; s!\\.git$!!'"
+	))
+	local branch = vim.fn.trim(vim.fn.system("git rev-parse --abbrev-ref HEAD"))
+	local root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
+	local file = vim.fn.expand("%:p")
+	local rel = file:sub(#root + 2)
+	local line = vim.fn.line(".")
+	local url = string.format("%s/blob/%s/%s#L%d", base, branch, rel, line)
+	vim.fn.jobstart({ "open", url }, { detach = true })
+end, { desc = "Open line in browser" })
 
 
 -- Loading helper
@@ -245,6 +257,17 @@ safe("blink", function()
 				auto_show_delay_ms = 100,
 			},
 		},
+		cmdline = {
+			enabled = true,
+			keymap = {
+				preset        = "none",
+				["<C-Space>"] = { "show", "fallback" },
+				["<C-n>"]     = { "select_next", "fallback" },
+				["<C-p>"]     = { "select_prev", "fallback" },
+				["<CR>"]      = { "select_and_accept", "fallback" },
+				["<Esc>"]     = { "cancel", "fallback" },
+			}
+		}
 	})
 end)
 
@@ -724,23 +747,16 @@ safe("treesitter", function()
 
 	require("nvim-treesitter.config").setup({
 		ensure_installed = {
-			"lua",
-			"vim",
-			"vimdoc",
-			"markdown",
-			"markdown_inline",
-			"query",
-			"sql",
+			"lua", "vim", "vimdoc",
+			"markdown", "markdown_inline",
+			"query", "sql",
 			"dockerfile",
-			"c",
-			"rust",
-			"erlang",
-			"elixir",
-			"heex",
+			"c", "rust",
+			"erlang", "elixir", "heex",
 			"typescript",
-			"html",
-			"css",
+			"html", "css",
 			"proto",
+			"jinja", "j2"
 		},
 		install_dir = '',
 		ignore_install = {},
@@ -770,9 +786,8 @@ safe("which-key", function()
 
 	wk.setup({})
 
-	vim.keymap.set("n", "<leader>?", function()
-		wk.show({ global = false })
-	end, { desc = "Buffer Local Keymaps (which-key)" })
+	vim.keymap.set("n", "<leader>?", function() wk.show({ global = false }) end,
+		{ desc = "Buffer Local Keymaps (which-key)" })
 end)
 
 safe("gpg", function()
@@ -890,6 +905,36 @@ safe("gpg", function()
 			end
 		end,
 	})
+end)
+
+-- claude code
+safe("claudecode", function()
+	vim.pack.add({
+		{ src = "https://github.com/coder/claudecode.nvim" },
+	})
+
+	local claude = require("claudecode")
+	claude.setup({})
+
+	local map = vim.keymap.set
+
+	-- map("n", "<leader>a", nil, { desc = "AI/Claude Code" })
+	map("n", "<leader>ac", "<cmd>ClaudeCode<cr>", { desc = "Toggle Claude" })
+	map("n", "<leader>af", "<cmd>ClaudeCodeFocus<cr>", { desc = "Focus Claude" })
+	map("n", "<leader>ar", "<cmd>ClaudeCode --resume<cr>", { desc = "Resume Claude" })
+	map("n", "<leader>aC", "<cmd>ClaudeCode --continue<cr>", { desc = "Continue Claude" })
+	map("n", "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", { desc = "Select Claude model" })
+	map("n", "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", { desc = "Add current buffer" })
+	map("v", "<leader>as", "<cmd>ClaudeCodeSend<cr>", { desc = "Send to Claude" })
+	-- map("n",
+	--   "<leader>as",
+	--   "<cmd>ClaudeCodeTreeAdd<cr>",
+	--   { desc = "Add file" }
+	--   ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw" },
+	-- })
+	-- Diff management
+	map("n", "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", { desc = "Accept diff" })
+	map("n", "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", { desc = "Deny diff" })
 end)
 
 -- Filetype-specific settings
