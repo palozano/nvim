@@ -160,10 +160,10 @@ set("i", "<left>", "<nop>")
 set("i", "<right>", "<nop>")
 
 -- quick open from command line
-set("n", "<leader>o", ":find **/", { silent = false, desc = "Find file (:find via fd)" })
+-- set("n", "<leader>o", ":find **/", { silent = false, desc = "Find file (:find via fd)" })
 
 -- open the current line in the browser (uses the git alias `url` that I defined)
-set("n", "<leader>b",
+set("n", "<leader>ob",
 	function()
 		local base = vim.fn.trim(vim.fn.system(
 			"git remote get-url origin | sed -E 's!^ssh://git@([^/]+)/!https://\\1/!; s!\\.git$!!'"
