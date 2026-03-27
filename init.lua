@@ -940,6 +940,13 @@ safe("claudecode", function()
 	map("n", "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", { desc = "Deny diff" })
 end)
 
+safe("vimwiki", function()
+	vim.g.vimwiki_list = { { syntax = "markdown", ext = ".md" } }
+	vim.pack.add({
+		{ src = "https://github.com/vimwiki/vimwiki" },
+	})
+end)
+
 -- Filetype-specific settings
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "javascript", "lua" },
