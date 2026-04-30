@@ -381,8 +381,12 @@ safe("lsp", function()
 	local servers = {
 		lua_ls = {},
 		rust_analyzer = {
-			diagnostics = {
-				enable = true,
+			settings = {
+				["rust-analyzer"] = {
+					diagnostics = {
+						enable = true,
+					},
+				},
 			},
 		},
 		pylsp = {},
@@ -421,7 +425,7 @@ safe("lsp", function()
 				vim.api.nvim_create_autocmd("BufWritePre", {
 					buffer = args.buf,
 					callback = function()
-						lsp.buf.format({ bufnr = args.buf, id = client.id })
+						lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 5000 })
 					end,
 				})
 			end
