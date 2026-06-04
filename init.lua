@@ -166,7 +166,7 @@ set("i", "<right>", "<nop>")
 set("n", "<leader>ob",
 	function()
 		local base = vim.fn.trim(vim.fn.system(
-			"git remote get-url origin | sed -E 's!^ssh://git@([^/]+)/!https://\\1/!; s!\\.git$!!'"
+			"git remote get-url origin | sed -E 's!^ssh://git@([^/]+)/!https://\\1/!; s!^git@([^:]+):!https://\\1/!; s!\\.git$!!'"
 		))
 		local branch = vim.fn.trim(vim.fn.system("git rev-parse --abbrev-ref HEAD"))
 		local root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
@@ -945,9 +945,19 @@ safe("claudecode", function()
 end)
 
 safe("vimwiki", function()
-	vim.g.vimwiki_list = { { syntax = "markdown", ext = ".md" } }
 	vim.pack.add({
 		{ src = "https://github.com/vimwiki/vimwiki" },
+	})
+
+	vim.g.vimwiki_list = { { syntax = "markdown", ext = ".md" } }
+
+	vim.g.vimwiki_key_mappings = { headers = 0 }
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = { "vimwiki", "markdown" },
+		callback = function()
+			vim.keymap.set("n", ">", "<Plug>VimwikiAddHeaderLevel", { buffer = true, desc = "Vimwiki: add header level" })
+			vim.keymap.set("n", "<", "<Plug>VimwikiRemoveHeaderLevel", { buffer = true, desc = "Vimwiki: remove header level" })
+		end,
 	})
 end)
 
