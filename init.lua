@@ -86,6 +86,10 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+vim.keymap.set("n", "<leader>id", function()
+	vim.api.nvim_put({ os.date("%Y-%m-%d") }, "c", true, true)
+end, { desc = "Insert date (YYYY-MM-DD)" })
+
 vim.diagnostic.config({ virtual_text = true, virtual_lines = false })
 
 -- Keymaps
@@ -949,7 +953,15 @@ safe("vimwiki", function()
 		{ src = "https://github.com/vimwiki/vimwiki" },
 	})
 
-	vim.g.vimwiki_list = { { syntax = "markdown", ext = ".md" } }
+	vim.g.vimwiki_list = {
+		{
+			syntax = "markdown",
+			ext = ".md",
+			index = "_index",
+			diary_index = "_index",
+			diary_rel_path = "diary/",
+		}
+	}
 
 	vim.g.vimwiki_key_mappings = { headers = 0 }
 	vim.api.nvim_create_autocmd("FileType", {
@@ -960,6 +972,15 @@ safe("vimwiki", function()
 		end,
 	})
 end)
+
+-- safe("rainbow_csv", function()
+-- vim.pack.add({
+-- 	{ src = "https://github.com/mechatroner/rainbow_csv" },
+-- })
+
+-- local csv = require("rainbow-csv")
+-- csv.setup({})
+-- end)
 
 -- Filetype-specific settings
 vim.api.nvim_create_autocmd("FileType", {

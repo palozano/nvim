@@ -105,6 +105,10 @@
       "rev": "9983d4b28881e1df626e3682167b45c284d4da8c",
       "src": "https://github.com/stevearc/quicker.nvim"
     },
+    "rainbow_csv": {
+      "rev": "3dbbfd7d17536aebfb80f571255548495574c32b",
+      "src": "https://github.com/mechatroner/rainbow_csv"
+    },
     "render-markdown.nvim": {
       "rev": "7a43c8b444fa15b7736b34b248addb951126f723",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
