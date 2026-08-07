@@ -278,6 +278,16 @@ safe("blink", function()
 	})
 end)
 
+safe("colorscheme", function()
+	vim.pack.add({
+		{ src = "https://github.com/blazkowolf/gruber-darker.nvim" },
+	})
+
+	require("gruber-darker").setup({})
+
+	vim.cmd.colorscheme("gruber-darker")
+end)
+
 safe("crates", function()
 	vim.pack.add({
 		{ src = "https://github.com/saecki/crates.nvim" },
@@ -484,18 +494,6 @@ safe("mini", function()
 		require("mini.diff").toggle_overlay(0)
 	end, { desc = "Toggle diff overlay" })
 end)
-
--- safe("notes", function()
---   vim.pack.add({
---     { src = "https://github.com/nvim-neorg/neorg" },
---     { src = "https://github.com/nvim-neorg/lua-utils.nvim" },
---     -- { src = "https://github.com/nvim-treesitter/nvim-treesitter-legacy-api" },
---   })
---
---   local neorg = require("neorg")
---
---   neorg.setup()
--- end)
 
 safe("oil", function()
 	vim.pack.add({
