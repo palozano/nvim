@@ -754,35 +754,45 @@ safe("treesitter", function()
 		{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 	})
 
-	require("nvim-treesitter.config").setup({
-		ensure_installed = {
-			"lua", "vim", "vimdoc",
-			"markdown", "markdown_inline",
-			"query", "sql",
-			"dockerfile",
-			"c", "rust",
-			"erlang", "elixir", "heex",
-			"typescript",
-			"html", "css",
-			"proto",
-			"jinja", "j2"
-		},
-		install_dir = '',
-		ignore_install = {},
-		modules = {},
-		sync_install = false,
-		auto_install = false,
-		highlight = {
-			enable = true,
-			disable = function(_, buf)
-				local max_filesize = 100 * 1024 -- 100 KB
-				local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-				if ok and stats and stats.size > max_filesize then
-					return true
-				end
-			end,
-			additional_vim_regex_highlighting = false,
-		},
+	local ts = require("nvim-treesitter")
+
+	local wanted = {
+		"bash", "c", "css", "csv", "diff", "dockerfile",
+		"elixir", "erlang", "hcl", "heex", "html",
+		"jinja", "jinja_inline", "json", "just", "lua", "make",
+		"markdown", "markdown_inline", "proto", "query",
+		"rust", "sql", "terraform", "toml", "typescript",
+		"typst", "vim", "vimdoc", "yaml",
+	}
+
+	-- `install` is the only way in on this branch, and it compiles each parser,
+	-- so it is filtered to the missing ones rather than run over the whole list.
+	-- It returns immediately; parsers appear as their builds finish.
+	local installed = ts.get_installed()
+	local missing = vim.tbl_filter(function(lang)
+		return not vim.tbl_contains(installed, lang)
+	end, wanted)
+
+	if #missing > 0 then
+		ts.install(missing)
+	end
+
+	-- Terraform files get filetype `tf`, which matches no parser name.
+	vim.treesitter.language.register("terraform", "tf")
+
+	-- Highlighting belongs to Neovim, not to this plugin: it has to be started
+	-- per buffer.  `pcall` covers the filetypes with no parser, including the
+	-- window during first startup while the builds above are still running.
+	vim.api.nvim_create_autocmd("FileType", {
+		group = vim.api.nvim_create_augroup("treesitter-highlight", { clear = true }),
+		callback = function(ev)
+			local max_filesize = 100 * 1024 -- 100 KB
+			local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(ev.buf))
+			if ok and stats and stats.size > max_filesize then
+				return
+			end
+			pcall(vim.treesitter.start, ev.buf)
+		end,
 	})
 end)
 
