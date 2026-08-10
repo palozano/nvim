@@ -779,9 +779,8 @@ safe("treesitter", function()
 	-- Terraform files get filetype `tf`, which matches no parser name.
 	vim.treesitter.language.register("terraform", "tf")
 
-	-- vimwiki claims every .md file, not just the ones inside the wiki, so
-	-- markdown buffers arrive as filetype `vimwiki` and match no parser name.
-	-- The grammar handles them either way; only the name needs bridging.
+	-- Files inside the wiki get filetype `vimwiki`, which matches no parser
+	-- name. The grammar parses them fine; only the name needs bridging.
 	vim.treesitter.language.register("markdown", "vimwiki")
 
 	-- Highlighting belongs to Neovim, not to this plugin: it has to be started
@@ -965,6 +964,7 @@ safe("vimwiki", function()
 		{ src = "https://github.com/vimwiki/vimwiki" },
 	})
 
+	-- No `path`, so the wiki is vimwiki's default ~/vimwiki/.
 	vim.g.vimwiki_list = {
 		{
 			syntax = "markdown",
@@ -974,6 +974,14 @@ safe("vimwiki", function()
 			diary_rel_path = "diary/",
 		}
 	}
+
+	-- Confine vimwiki to the wiki itself.  Left at its default of 1, opening any
+	-- .md anywhere spins up a "temporary wiki" rooted at that file's directory
+	-- and sets filetype `vimwiki`, which costs every markdown file outside the
+	-- wiki both its treesitter parser and anything keyed on filetype `markdown`
+	-- -- render-markdown among them.  The trade is `[[link]]` following, which
+	-- now works only inside the wiki.
+	vim.g.vimwiki_global_ext = 0
 
 	vim.g.vimwiki_key_mappings = { headers = 0 }
 	vim.api.nvim_create_autocmd("FileType", {
