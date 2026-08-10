@@ -16,10 +16,6 @@ o.conceallevel = 1
 -- not enable folding
 o.foldenable = false
 o.foldmethod = "manual"
---
-o.shiftwidth = 4
-o.expandtab = true
-o.tabstop = 4
 o.clipboard = "unnamedplus"
 o.number = true
 o.relativenumber = true
@@ -393,6 +389,9 @@ safe("lsp", function()
 	})
 
 	local servers = {
+		-- Diagnostics come from shellcheck, which bashls shells out to and skips
+		-- silently when absent; the rest of the server works without it.
+		bashls = {},
 		lua_ls = {},
 		rust_analyzer = {
 			settings = {
@@ -779,6 +778,11 @@ safe("treesitter", function()
 
 	-- Terraform files get filetype `tf`, which matches no parser name.
 	vim.treesitter.language.register("terraform", "tf")
+
+	-- vimwiki claims every .md file, not just the ones inside the wiki, so
+	-- markdown buffers arrive as filetype `vimwiki` and match no parser name.
+	-- The grammar handles them either way; only the name needs bridging.
+	vim.treesitter.language.register("markdown", "vimwiki")
 
 	-- Highlighting belongs to Neovim, not to this plugin: it has to be started
 	-- per buffer.  `pcall` covers the filetypes with no parser, including the
